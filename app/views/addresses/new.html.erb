@@ -1,4 +1,9 @@
+<h4>Hello <%= @user.name %>, please provide a primary address!</h4>
+
 <%= form_for [@user, @address] do |f| %>
+  <%= f.label :nickname %>
+  <%= f.text_field :nickname %>
+
   <%= f.label :name %>
   <%= f.text_field :name %>
 
