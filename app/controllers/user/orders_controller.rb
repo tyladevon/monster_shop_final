@@ -9,11 +9,14 @@ class User::OrdersController < ApplicationController
     @order = current_user.orders.find(params[:id])
   end
 
+
   def create
-    order = current_user.orders.new
-    order.save
+    user = current_user
+    address = Address.find_by(params[:id])
+    order = current_user.orders.create!(address_id: address.id, user_id: user.id)
+    order.save!
       cart.items.each do |item|
-        order.order_items.create({
+        order.order_items.create!({
           item: item,
           quantity: cart.count_of(item.id),
           price: item.price
