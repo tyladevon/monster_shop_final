@@ -7,4 +7,5 @@ class Address < ApplicationRecord
                         :state,
                         :zip
   belongs_to :user
+  has_many :orders
 end
