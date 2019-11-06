@@ -36,6 +36,20 @@ class AddressesController < ApplicationController
     end
   end
 
+  def destroy
+    address = Address.find(params[:id])
+    shipped = address.orders.any? do |order|
+      order.status == "shipped"
+    end
+    if !shipped
+      address.destroy
+      redirect_to "/profile"
+    else
+      flash[:error] = "Can't delete address"
+      redirect_to "/profile"
+    end
+  end
+
   private
   def address_params
     params.require(:address).permit(:nickname, :name, :address, :city, :state, :zip)
