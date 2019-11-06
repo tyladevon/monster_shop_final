@@ -16,12 +16,20 @@
       <%= button_to 'Remove', "/cart/#{item.id}", method: :delete %>
     </section>
   <% end %>
-  <section id='checkout'>
-    <% if current_user %>
-      <%= button_to 'Check Out', '/orders' %>
-    <% else %>
+  <p><%= button_to 'Empty Cart', '/cart', method: :delete %></p>
+  <% end %>
+
+  <h2>Shipping and Checkout</h2>
+  <section>
+    <% if current_user && !current_user.addresses.empty? %>
+      <% current_user.addresses.each  do |address| %>
+        <p><%= address.nickname %></p>
+        <p><%=button_to "Checkout with this address ", orders_path(address.id) %></p>
+      <% end  %>
+    <% elsif !current_user %>
       <p>You must <%= link_to 'register', registration_path %> or <%= link_to 'log in', login_path %> to checkout.</p>
+    <% elsif current_user.addresses.empty? %>
+        <p>Please provide a shipping address <% link_to "New Address", new_user_address_path %></p>
     <% end %>
+
   </section>
-  <%= button_to 'Empty Cart', '/cart', method: :delete %>
-<% end %>
